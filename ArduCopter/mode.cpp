@@ -237,7 +237,9 @@ bool Copter::set_mode(Mode::Number mode, ModeReason reason)
     // update last reason
     const ModeReason last_reason = _last_reason;
     _last_reason = reason;
-    if (flightmode->mode_number() == Mode::Number::CLIMB || flightmode->mode_number() == Mode::Number::TOP){
+    //*MYP.S. 加入TOP模式切入recovery模式  另：为了演示临时取消
+    // if (flightmode->mode_number() == Mode::Number::CLIMB || flightmode->mode_number() == Mode::Number::TOP){
+    if (flightmode->mode_number() == Mode::Number::CLIMB ){
             desired_mode = mode;
             mode = Mode::Number::RECOVERY;
     }

@@ -80,7 +80,6 @@ void ModeRecovery::run()
         throttle_out -= RECOVERY_THR_DEC;
         throttle_out = MAX(0.0f,throttle_out);
         // beyond 80deg lean angle move to next stage
-
         if (flip_angle < 2500) {
             _state = RecoveryState::MY_mid;
             MY_TIMER=0;
@@ -91,22 +90,12 @@ void ModeRecovery::run()
 
     case RecoveryState::MY_mid:{
         MY_TIMER+=1;
-        if(desired_control_mode==Mode::Number::TOP){
-            attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0.0f, 0.0f , 0.0f);
-        }else{
-            attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0.0f, 2000.0f , 0.0f);
-        }
-        
+        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0.0f, 2000.0f , 0.0f);
         if (MY_TIMER>=50) {
             _state = RecoveryState::Recovery;
             MY_TIMER=0;
         }
-        if(desired_control_mode==Mode::Number::TOP){
-            attitude_control->set_throttle_out(0.4f,false, g.throttle_filt);
-        }else{
-            attitude_control->set_throttle_out(0.6f,false, g.throttle_filt);
-        }
-
+        attitude_control->set_throttle_out(0.6f,false, g.throttle_filt);
         break;
     }
 
@@ -123,8 +112,8 @@ void ModeRecovery::run()
         float MY_dt=copter.scheduler.MY_LOOP();
         // if(MY_i==100)
         //     hal.console->printf("dt:%f",MY_dt);
-        //*MYP.S. 初始化pid对象     参数：p:0.005 |i:0 |d:0.0001 |最大速度:3.0 |最大变化值:0.5
-        static MY_PIDController pid(0.005, 0, 0.0001, 2.0, 0.5); 
+        //*MYP.S. 初始化pid对象     参数：p:0.005 |i:0 |d:0.0001 |最大速度:1.0 |最大变化值:0.5
+        static MY_PIDController pid(0.005, 0, 0.0001, 1.0, 0.5); 
         // if(MY_i==100)
         //     hal.console->printf("pid initial");
         float target_height;

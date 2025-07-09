@@ -82,7 +82,7 @@ void ModeTop::run()
 
     case TopState::Start:
         // under 45 degrees request 400deg/sec roll or pitch
-        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0.0f, 675.0f , 0.0f);
+        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0.0f, 0.0f , 0.0f);
 
         // increase throttle
         throttle_out = 0.5f;
